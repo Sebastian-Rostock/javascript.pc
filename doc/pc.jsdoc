@@ -1,0 +1,500 @@
+﻿-* pc - prototype class - [cc-by] Sebastian Rostock *-
+-* Dieses Werk ist unter einem Creative Commons Namensnennung 3.0 Deutschland Lizenzvertrag lizenziert. Um die Lizenz anzusehen, gehen Sie bitte zu:  [ http://creativecommons.org/licenses/by/3.0/de/ ] oder schicken Sie einen Brief an:  [ Creative Commons, 171 Second Street, Suite 300, San Francisco, California 94105, USA. ] *-
+
+pc(): pc.NS<pc> {
+	@de|Der Name "pc" steht für "Prototype-Class" (Prototypenklasse) und bezeichnet den Kern einer objektorientierten Mehrfachvererbungsbibliothek für "JavaScript". Diese Bibliothek bietet eine bequeme Schnittstelle zur Definition neuer Klassen. Bemerkenswert sind die Fähigkeiten, Klassen und Objekte mit privaten, geschützten und öffentlichen Feldern und Methoden zu definieren.|
+	@en|The name "pc" stands for "Prototype-Class" and identifies the core of an object-oriented-multiple-inheritance-library for "JavaScript". This library provides a comfortable interface for defining new classes. Noteworthy are the abilities to define classes and objects with private, protected and public fields and methods.|
+	--{ BASICS
+	@|<br><br>|
+	@de|Um den Namensraum nutzen zu können, ruft man einfach die Funktion "pc" auf. Diese erstellt den Namensraum, ersetzt sich mit ihm und gibt ihn zurück.|
+	@en|To be able use the name-space, one simply calls the function "pc". It creates the name-space, replaces itself with it and returns it.|
+	@|<br><br>|
+	@de|Die beiden wichtigsten Methoden sind "pc.Ns()" zum Erstellen neuer Namensräume und "pc.Of()" zur Definition neuer Klassen. Bei der Klassendefinition werden zwei Modi unterschieden:|
+	@en|The two main methods are "pc.Ns()" to create new name-spaces and "pc.Of()" to define new classes. In the class-definition, two modes are distinguished:|
+	@|<table><tr><th>"xpc" (eXtensible-Prototype-Class)</th><td>|
+	@de|Klassen, die in diesem Modus definiert werden, können geschützte und öffentliche Mitglieder besitzen, frei über die Vererbungsreihenfolge entscheiden und Methoden der Vorfahrenklassen überscheiben.|
+	@en|Classes that are defined in this mode, can have protected and public members, can freely decide the inheritance order and can override methods of the ancestor-classes.|
+	@|</td></tr><tr><th>"spc" (Simple-Prototype-Class)</th><td>|
+	@de|Klassen, die in diesem Modus definiert werden, können nur öffentliche Mitglieder besitzen.|
+	@en|Classes that are defined in this mode, can only have public members.|
+	@|</td></tr></table>|
+	@|<br><br>|
+	@de|Um die Funktionsweise der Bibliothek besser verstehen zu können sollen an dieser Stelle einige Grundlagen zu "JavaScript" erläutert werden. Alle Felder und Methoden, die man einem Objekt oder dem "prototype" Attribut einer Klassenfunktion zuweist, sind öffentlich, d.h. auf solche Mitglieder kann von überall zugegriffen werden. Alle lokalen Variablen einer Funktion, zu denen auch die Funktionsargumente zählen, sind privat, d.h. auf solche Mitglieder kann nur innerhalb der Funktion zugegriffen werden.|
+	@en|To be able to understand the functionality of the library, some basics to "JavaScript" should be explained at this point. All fields and methods which one assigns to an object or the "prototype"-attribute of a class-function are public, i.e. such members can be accessed from everywhere. All local variables of a function to which also the function arguments count are private, i.e. such members can be accessed only within the function.|
+	@|<br><br>|
+	@de|Geschützte Mitglieder sollen sich wie private nach außen und wie öffentliche nach innen verhalten, d.h. sie sollen nicht von außen, aber von innen in jeder Klassendefinitionsfunktion und jeder Konstrukteurfunktion zugreifbar sein. Dieses Verhalten wird durch Objekte erreicht, die den Funktionen eines Vererbungsbaumes übergeben werden.|
+	@en|Protected members should behave like private to the outside and like public to the inside, i.e. they should not be accessible from outside, but from inside every class-definition-function and every constructor-function. This behaviour is realized by objects that are passed to the functions of an inheritance tree.|
+	@|<br><br>|
+	@de|Die nun folgenden Beispiele sollen die Verwendung dieser Bibliothek illustrieren:|
+	@en|The now following examples should illustrate the usage of this library:|
+	--}
+	--{ NAME-SPACE VOID
+	@|<br><br><u>|
+	@de|Definition eines leeren Namensraums:|
+	@en|Definition of an empty name-space:|
+	@|</u><br>|
+	@de|Hier wird die Funktion "myNameSpace()" definiert, die sich selbst durch einen neuen Namensraum ersetzt und diesen zurückgibt. Nachdem die Funktion "myNameSpace()" mit dem Namensraum ersetzt worden ist, kann dieser um beliebige Felder und Methoden erweitert werden.|
+	@en|Here the function "myNameSpace()" is defined, that replaces itself with a new name-space and returns it. After the function "myNameSpace()" has been replaced with the name-space, it can arbitrarily be extended by fields and methods.|
+	@|<div class=""pre code"">function myNameSpace(){
+  myNameSpace = pc.Ns();
+  ...
+  return myNameSpace;
+}</div><br><u>|
+	--}
+	--{ NAME-SPACE FIELD
+	@de|Definition eines Namensraums mit Feldern:|
+	@en|Definition of a name-space with fields:|
+	@|</u><br>|
+	@de|Hier wird der Namensraum "CONST()" mit seinen Feldern "PI" und "E" definiert.|
+	@en|Here the name-space "CONST()" with its fields "PI" and "E" is defined.|
+	@|<div class=""pre code"">function CONST(){
+  return CONST = pc.Ns({ PI: 3.141592654, E: 2.718281828 });
+}</div><br><u>|
+	--}
+	--{ NAME-SPACE MEMBER 
+	@de|Definition eines Namensraums mit Feldern und Methoden:|
+	@en|Definition of a name-space with fields and methods:|
+	@|</u><br>|
+	@de|Hier wird der Namensraum "node()" zur "HTML"-Knotenerzeugung definiert. Er enthält das private Feld "functionNames", die öffentlichen Felder "ID", "TAG" und "TEXT" sowie die öffentliche Methode "create()".|
+	@en|Here the name-space "node()" for "HTML"-node-creation is defined. It contains the private field "functionNames", the public fields "ID", "TAG" and "TEXT" as well as the public method "create()".|
+	@|<div class=""pre code"">function node(){
+  var functionNames = [ 'getElementById', 'createElement', 'createTextNode' ];
+  return node = pc.Ns({
+    ID: 0, TAG: 1, TEXT: 2
+    create: function(Mode, Value){
+      return ((Mode = functionNames[Mode]) ? document[Mode](Value) : null);
+    }
+   });
+}</div><br><u>|
+	--}
+	--{ CLASS VOID
+	@de|Definition einer leeren Klasse:|
+	@en|Definition of an empty class:|
+	@|</u><br>|
+	@de|Hier werden die leeren Klassen "voidXpcClass" und "voidSpcClass" ohne Mitglieder definiert.|
+	@en|Here the empty classes "voidXpcClass" and "voidSpcClass" without members are defined.|
+	@|<div class=""pre code"">var voidXpcClass = pc.Of(function(This, Type){
+  return function(){
+  };
+},false);
+var voidSpcClass = pc.Of(function(This, Type){
+  return function(){
+  };
+},true);</div><u>|
+	--}
+	--{ CLASS MEMBER
+	@de|Definition einer Klasse mit Feldern und Methoden verschiedener Sichtbarkeit:|
+	@en|Definition of a class with fields and methods of different visibility:|
+	@|</u><br>|
+	@de|Hier definiert die "xpc"-Klasse "nameXpcClass" das private statische Feld "instanceCount", das geschützte Feld "name", die geschützten Methoden "getName()" und "setName()", die öffentliche statische Methode "getInstanceCount()", sowie die öffentlichen Methoden "getId()", "getName()", "setName()" und "toString()". Das Konstrukteurargument "Id" wird als privates Feld von der Methode "getId()" genutzt und das Konstrukteurargument "Name" initialisiert das geschützte Feld "name".|
+	@en|Here the "xpc"-class "nameXpcClass" defines the private static field "instanceCount", the protected field "name", the protected methods "getName()" and "setName()", the public static method "getInstanceCount()", as well as the public methods "getId()", "getName()", "setName()" and "toString()". The constructor-argument "Id" is used as a private field by the method "getId()" and the constructor-argument "Name" initiates the protected field "name".|
+		--{ XPC
+	@|<div class=""pre code"">var nameXpcClass = pc.Of(function(This, Type){
+  var instanceCount = 0;
+  this.name = null
+  this.getName = function(){
+    return this.name;
+  };
+  this.setName = function(Name){
+    this.name = Name;
+    return this.This;
+  };
+  this.Publish('getName').Publish('setName');
+  This.toString = function(){
+    return 'nameXpcClass(' + this.getId() + ', ' + this.getName() + ')';
+  };
+  Type.getInstanceCount = function(){
+    return instanceCount;
+  };
+  return function(Id, Name){
+    instanceCount++;
+    this.This.getId = function(){
+      return Id;
+    };
+    this.name = Name;
+  };
+},false);</div><br>|
+		--}
+	@de|In der "spc"-Klasse "nameSpcClass" werden die gleichen öffentlichen und statischen Mitglieder definiert. Das Feld "name" ist nun aber auch öffentlich.|
+	@en|In the "spc"-class "nameSpcClass" the same public and static members are fedined. The field "name" now also is public.|
+		--{ SPC
+	@|<div class=""pre code"">var nameSpcClass = pc.Of(function(This, Type){
+  var instanceCount = 0;
+  This.getName = function(){
+    return this.name;
+  };
+  This.setName = function(Name){
+    this.name = Name;
+    return this;
+  };
+  This.toString = function(){
+    return 'nameSpcClass(' + this.getId() + ', ' + this.getName() + ')';
+  };
+  Type.getInstanceCount = function(){
+    return instanceCount;
+  };
+  return function(Id, Name){
+    instanceCount++;
+    this.getId = function(){
+      return Id;
+    };
+    this.name = Name;
+  };
+},true);</div><br><u>|
+		--}
+	--}
+	--{ CLASS INHERIT
+	@de|Definition einer erbenden Klasse:|
+	@en|Definition of an inheriting class:|
+	@|</u><br>|
+	@de|Hier erbt die "xpc"-Klasse "personXpcClass" von der "xpc"-Klasse "nameXpcClass" und ruft in ihrer Konstrukteurfunktion die Konstrukteurfunktion der Vorfahrenklasse auf. Des Weiteren definiert sie das geschützte Feld "age", sowie die öffentlichen Methoden "getAge()", "setAge()" und "toString()".|
+	@en|Here the "xpc"-class "personXpcClass" inherits from the "xpc"-class "nameXpcClass" and calls the ancestor-class's constructor-function in its own constructor-function. Besides this, it defines the protected field "age", as well as the public methods "getAge()", "setAge()" and "toString()".|
+		--{ XPC
+	@|<div class=""pre code"">var personXpcClass = pc.Of(function(This, Type){
+  this.Super(nameXpcClass);
+  this.Publish('getAge', function(){
+    return this.age;
+  });
+  this.Publish('setAge', function(Age){
+    this.age = Age;
+    return this.This;
+  });
+  This.toString = function(){
+    return 'personXpcClass(' + this.getId() + ', ' + this.getAge() + ', ' + this.getName() + ')';
+  };
+  return function(Id, Age, Name){
+    this.Super(Id, Name).age = Age;
+  };
+},false);</div><br>|
+		--}
+	@de|Die "spc"-Klasse "personSpcClass" definiert die gleichen Mitglieder und erbt von der "spc"-Klasse "nameSpcClass".|
+	@en|The "spc"-class "personSpcClass" defines the same members and inherits from the "spc"-class "nameSpcClass".|
+		--{ SPC
+	@|<div class=""pre code"">var personSpcClass = pc.Of(function(This, Type){
+  this.Super(nameSpcClass);
+  This.getAge = function(){
+    return this.age;
+  };
+  This.setAge = function(Age){
+    this.age = Age;
+    return this;
+  };
+  This.toString = function(){
+    return 'personSpcClass(' + this.getId() + ', ' + this.getAge() + ', ' + this.getName() + ')';
+  };
+  return function(Id, Age, Name){
+    nameSpcClass.call(this, Id, Name);
+    this.age = Age;
+  };
+},true);</div><br><u>|
+		--}
+	--}
+	--{ CLASS OVERRIDE
+	@de|Definition einer Klasse mit Methodenüberschreibung:|
+	@en|Definition of class with method-overriding:|
+	@|</u><br>|
+	@de|Hier überschreibt die "xpc"-Klasse "nameModifyXpcClass" die geerbte Methode "setName()" mit einer Funktion, die bei bevor stehender Veränderung des geschützten Feldes "name" ein "alert" Fenster anzeigt und anschließend die vorherige Implementierung dieser Methode aufruft, wodurch der Wert des Feldes schließlich geändert wird.|
+	@en|Here the "xpc"-class "nameModifyXpcClass" overrides the inherited method "setName()" with a function, that indicates the imminent modification of the protected field "name" with an "alert"-window and afterwards calls the previous implementing of this method by which the value of the field is finally modified.|
+		--{ XPC
+	@|<div class=""pre code"">var nameModifyXpcClass = pc.Of(function(This, Type){
+  this.Super(nameXpcClass).Override('setName', function(Name){
+    if(Name != this.name)alert(this.This + '.name has been modified!');
+    return this.Super(Name);
+  });
+  return function(Id, Name){
+    this.Super(Id, Name);
+  };
+},false);</div><br>|
+		--}
+	@de|Die "spc"-Klasse "nameModifySpcClass" überschreibt die gleiche Methode und erbt von der "spc"-Klasse "nameSpcClass".|
+	@en|The "spc"-class "nameModifySpcClass" overrides the same method and inherits from the "spc"-class "nameSpcClass".|
+		--{ SPC
+	@|<div class=""pre code"">var nameModifySpcClass = pc.Of(function(This, Type){
+  this.Super(nameSpcClass).Override('This','setName', function(Name){
+    if(Name != this.name)alert(this + '.name has been modified!');
+    return this.Super(Name);
+  });
+  return function(Id, Name){
+    nameSpcClass.call(this, Id, Name);
+  };
+},true);</div>|
+		--}
+	--}
+	+ (): pc // pc.NS
+	- spc: pc.spc
+		@de|Dieser Namensraum definiert die "spc"-Basisklassen.|
+		@en|This name-space defines the "spc"-base-classes.|
+	- xpc: pc.xpc
+		@de|Dieser Namensraum definiert die "xpc"-Basisklassen.|
+		@en|This name-space defines the "xpc"-base-classes.|
+	- This<GType: pc.Type<?; ?>>(): pc.This<GType>
+		@de|Diese Klasse definiert die Instanz einer "pc"-Klasse.|
+		@en|This class defines the insance of a "pc"-class.|
+	- Type<GThis: pc.This<?>; GSpec: pc.Spec<GThis; ?; ?; ?>>(): pc.Type<GThis; GSpec>
+		@de|Diese Klasse definiert die Klassenfunktion einer "pc"-Klasse.|
+		@en|This class defines the class-function of a "pc"-class.|
+	- Spec<GThis; GType; GCons; GBase: pc.Base<?>>(): pc.Spec<GThis; GType; GCons; GBase>
+		@de|Diese Klasse definiert die Spezifikationsfunktion einer "pc"-Klasse.|
+		@en|This class defines the specification-function of a "pc"-class.|
+	- Base<GSpec: pc.Spec<?; ?; ?; ?>>(): pc.Base<GSpec>
+		@de|Diese Klasse definiert die Sammlung der Basistypspezifikationsfunktionen einer "pc"-Klasse.|
+		@en|This class defines the collection of the base-type-specification-functions of a "pc"-class.|
+	+ Ns<GNs: pc.NS>(Map: Object{}): pc.NS<GNs>
+		@de|Diese Methode erstellt einen neuen Namensraum, erweitert ihn um die Mitglieder in "Map" und gibt ihn zurück. Ein Namensraum ist eine Funktion die sich selbst zurückgibt.|
+		@en|This method creates a new name-space, extends it by the members in "Map" and returns it. A name-space is a function that returns itself.|
+	+ Is(Type: pc.Type<?>; ...: pc.Type<?>): Boolean
+		@de|Diese Methode gibt nur dann "true" zurück, wenn alle Klassen "..." Vorfahren der Klasse "Type" sind.|
+		@en|This method returns "true" only if all classes "..." are ancestors of the class "Type".|
+	+ Of<GThis: pc.This<GType>; GType: pc.Type<GThis; GSpec>; GSpec: pc.Spec<GThis; GType; ?; ?>>(Spec: GSpec; Simple: Boolean): GType
+		@de|Wenn "Simple" "true" ist, erstellt diese Methode eine neue "spc"-Klasse (Simple-Prototype-Class) und gibt sie zurück. Die Spezifikationsfunktion "Spec" definiert dann die Felder und Methoden der Klasse sowie ihres Prototyps und gibt die Klassenfunktion zurück. Wenn "Simple" dagegen "false" ist, erstellt diese Methode eine neue "xpc"-Klasse (eXtensible-Prototype-Class) und gibt diese zurück. Die Spezifikationsfunktion "Spec" definiert dann die Felder und Methoden der Klasse sowie ihrer Prototypen und gibt den Instanzkonstrukteur zurück.|
+		@en|If "Simple" is "true", this method creates a new "spc"-class (Simple-Prototype-Class) and returns it. The specification-function "Spec" defines the fields and methods of the class as well as its prototype and returns the class-function. If "Simple" is "false", this method creates a new "xpc"-class (eXtensible-Prototype-Class) and returns it. The specification-function "Spec" then defines the fields and methods of the class as well as its prototypes and returns the instance-constructor.|
+	+ NewToString(Type: String; Values: Object[]; Format: Boolean): String
+		@de|Diese Methode gibt die Instanziierung der Klasse "Type" mit den Argumenten "Values" im Formatmodus "Format" als Zeichenkette zurück.|
+		@en|This method returns the instantiation of calss "Type" with the arguments "Values" in format-mode "Format" as string.|
+	+ MapToString(Map: Object{}): String
+		@de|Diese Methode gibt die Abbildung "Map" in "JSON" zurück.|
+		@en|This method returns the map "Map" in "JSON".|
+	+ ListToString(List: Object[]): String
+		@de|Diese Methode gibt die Liste "List" in "JSON" zurück.|
+		@en|This method returns the list "List" in "JSON".|
+	+ TextToString(Text: String): String
+		@de|Diese Methode gibt die Zeichenkette "Text" in "JSON" zurück.|
+		@en|This method returns the string "Text" in "JSON".|
+}
+
+--{ ns = name-space
+
+	pc.NS<GNs: pc.NS>(): Function {
+		@de|Diese Klasse definiert einen Namensraum als eine Funktion die sich selbst zurückgibt. Allgemein wird ein Namensraum in einer Funktion definiert, die den Namensraum bei ihrem ersten Aufruf initialisiert und ihn zurück gibt. Alle weiteren Aufrufe geben den initialisiert Namensraum direkt zurück.|
+		@en|This class defines a name-space as a function that returns itself. In general, a name-space is defined in a function that initiates the name-space when it is called for the first time and after that returns it. All further calls directly return the initialized name-space.|
+		+ (): GNs
+			@de|Der Aufrufoperator gibt den Namensraum zurück.|
+			@en|The call-operator returns the name-space.|
+	}
+
+--}
+
+--{ pc = prototype-class
+
+	pc.This<GType: pc.Type<?; ?>>(): Object {
+		@de|Diese Klasse definiert die Instanz einer "pc"-Klasse.|
+		@en|This class defines the insance of a "pc"-class.|
+		+ constructor: GType
+			@de|Dieses Feld speichert die Klassenfunktion.|
+			@en|This field stores the class-function.|
+	}
+
+	pc.Type<GThis: pc.This<?>; GSpec: pc.Spec<GThis; ?; ?; ?>>(): Function {
+		@de|Diese Klasse definiert die Klassenfunktion einer "pc"-Klasse.|
+		@en|This class defines the class-function of a "pc"-class.|
+		@de|Eine Klassenfunktion wird über den Operator "new" mit den Konstrukteurargumenten aufgerufen und soll eine neue Instanz zurückgeben.|
+		@en|A class-function is called with the constructor-arguments via the "new" operator and should return a new instance.|
+		+ (...: Object): GThis
+			@de|Der Aufrufoperator initialisiert die Instanz und gibt sie zurück.|
+			@en|The call-operator initiates the instance and returns it.|
+		+ constructor: GSpec
+			@de|Dieses Feld speichert die Spezifikationsfunktion.|
+			@en|This field stores the specification-function.|
+	}
+
+	pc.Spec<GThis; GType; GCons; GBase: pc.Base<?>>(): Function {
+		@de|Diese Klasse definiert die Spezifikationsfunktion einer "pc"-Klasse.|
+		@en|This class defines the specification-function of a "pc"-class.|
+		@de|Eine Spezifikationsfunktion wird mit einem Prototypen sowie seiner Klassenfunktion aufgerufen und soll die Konstrukteurfunktion zurückgeben.|
+		@en|A specification-function is called with a prototype as well as its class-function and should return the constructor-function.|
+		+ (This: GThis; Type: GType): GCons
+			@de|Der Aufrufoperator definiert die Mitglieder des Prototyps "This" sowie seiner Klassenfunktion "Type" und gibt die Konstrukteurfunktion zurück.|
+			@en|The call-operator defines the members of the prototype "This" as well as its class-function "Type" and returns the constructor-function.|
+		+ constructor: GBase
+			@de|Dieses Feld speichert die Spezifikationsfunktionen der Basistypen.|
+			@en|This field stores the specification-functions of the base-types.|
+	}
+
+	pc.Base<GSpec: pc.Spec<?; ?; ?; ?>>(): Object {
+		@de|Diese Klasse definiert die Sammlung der Basistypspezifikationsfunktionen einer "pc"-Klasse.|
+		@en|This class defines the collection of the base-type-specification-functions of a "pc"-class.|
+		+ {}: GSpec
+			@de|Der Namensoperator erlaubt den Zugriff auf die Spezifikationsfunktionen der Basistypen uber ihre Namen.|
+			@en|The name-operator allows access to the specification-functions of the base-types by their names.|
+		+ constructor: String
+			@de|Dieses Feld speichert den Name des "pc"-Klasse.|
+			@en|This field stores the name of the "pc"-class.|
+	}
+	
+--}
+
+--{ spc = simple-prototype-class
+
+	pc.spc(): pc.NS<pc.spc> {
+		@de|Dieser Namensraum definiert die "spc"-Basisklassen.|
+		@en|This name-space defines the "spc"-base-classes.|
+		+ (): pc.spc // pc.NS
+		+ This(): pc.spc.This
+			@de|Diese Klasse definiert die Instanz einer "spc"-Klasse.|
+			@en|This class defines the instance or a "spc"-class.|
+		+ Type<GThis: pc.spc.This>() pc.spc.Type<GThis>
+			@de|Diese Klasse definiert die Klassenfunktion einer "spc"-Klasse.|
+			@en|This class defines the class-function of a "spc"-class.|
+		+ Spec<GThis: pc.spc.This>(): pc.spc.Spec<GThis>
+			@de|Diese Klasse definiert die Spezifikationsfunktion einer "spc"-Klasse.|
+			@en|This class defines the specification-function of a "spc"-class.|
+		+ Base(): pc.spc.Base
+			@de|Diese Klasse definiert die Sammlung der Basistypspezifikationsfunktionen einer "spc"-Klasse.|
+			@en|This class defines the collection of the base-type-specification-functions of a "spc"-class.|
+		+ Core<GThis: pc.spc.This>(): pc.spc.Core<GThis>
+			@de|Diese Klasse definiert den Aufrufkontext "this" der Spezifikationsfunktion einer "spc"-Klasse.|
+			@en|This class defines the call-context "this" of the specification-function of a "spc"-Type.|
+	}
+
+	pc.spc.This(): pc.This<pc.spc.Type<pc.spc.This>> {
+		@de|Diese Klasse definiert die Instanz einer "spc"-Klasse.|
+		@en|This class defines the instance or a "spc"-class.|
+		+ constructor: pc.spc.Type<pc.spc.This> // pc.This
+	}
+
+	pc.spc.Type<GThis: pc.spc.This>(): pc.Type<GThis; pc.spc.Spec<GThis>> {
+		@de|Diese Klasse definiert die Klassenfunktion einer "spc"-Klasse.|
+		@en|This class defines the class-function of a "spc"-class.|
+		+ (...: Object): GThis // pc.Type
+		+ constructor: pc.spc.Spec<GThis> // pc.Type
+	}
+
+	pc.spc.Spec<GThis: pc.spc.This>(): pc.Spec<GThis; pc.spc.Type<GThis>; pc.spc.Type<GThis>; pc.spc.Base> {
+		@de|Diese Klasse definiert die Spezifikationsfunktion einer "spc"-Klasse.|
+		@en|This class defines the specification-function of a "spc"-class.|
+		@de|Der Aufrufoperator definiert die Mitglieder des Prototyps "This" sowie seiner temporären Klassenfunktion "Type" und gibt die echte Klassenfunktion zurück. Der Kontext "this" ist vom Typ "pc.spc.Core&lt;GThis&gt;". Die Mitglieder der temporären Klassenfunktion werden automatisch auf die echte Klassenfunktion übertragen.|
+		@en|The call-operator defines the members of the prototype "This" as well as its temporary class-function "Type" and returns the real class-function. The context "this" is of type "pc.spc.Core&lt;GThis&gt;". The members of the temporary class-function are transfered automatically to the real class-function.|
+		+ (This: GThis; Type: pc.spc.Type<GThis>): pc.spc.Type<GThis> // pc.Spec
+		+ constructor: pc.spc.Base // pc.Spec
+	}
+
+	pc.spc.Base(): pc.Base<pc.spc.Spec<?>> {
+		@de|Diese Klasse definiert die Sammlung der Basistypspezifikationsfunktionen einer "spc"-Klasse.|
+		@en|This class defines the collection of the base-type-specification-functions of a "spc"-class.|
+		+ {}: pc.spc.Spec<?> // pc.Base
+		+ constructor: String // pc.Base
+	}
+	
+	pc.spc.Core<GThis: pc.spc.This>(): Object {
+		@de|Diese Klasse definiert den Aufrufkontext "this" der Spezifikationsfunktion einer "spc"-Klasse.|
+		@en|This class defines the call-context "this" of the specification-function of a "spc"-Type.|
+		+ This: GThis
+			@de|Dieses Feld speichert den Prototyp.|
+			@en|This field stores the prototype.|
+		+ Type: pc.spc.Type<GThis>
+			@de|Dieses Feld speichert die Klassenfunktion.|
+			@en|This field stores the class-function.|
+		+ Super(...: pc.spc.Type<?>): pc.spc.Core<GThis>
+			@de|Diese Methode verarbeitet das Erben der Klassen "..." in der Angegebenen Reigenfologe und gibt "this" zurück.|
+			@en|This method processes the inheritance of the classes "..." in the given order and retruns "this".|
+		+ Override(Mode, Name: String; Method: Function): pc.spc.Core<GThis>
+			@de|Diese Methode überschreibt die Methode "this[Mode][Name]()" mit der Methode "Method" und gibt "this" zurück. In "Method" kann über "this.Super()" die überschriebene Implementierung aufgerufen werden. Beispielsweise überschreiben die Befehle "this.Override('This','DoSomething',function(){...})" und "this.Override('Type','OnChange',function(){...})" die Methoden "this.This.DoSomething()" und "this.Type.OnChange()".|
+			@en|This method overrides the method "this[Mode][Name]()" with the method "Method" and retruns "this". In "Method" the overridden implementation can be called via "this.Super()". For example, the commands "this.Override('This','DoSomething',function(){...})" and "this.Override('Type','OnChange',function(){...})" override the methods "this.This.DoSomething()" and "this.Type.OnChange()".|
+	}
+
+--}
+
+--{ xpc = extensible-prototype-class
+
+	pc.xpc(): pc.NS<pc.xpc> {
+		@de|Dieser Namensraum definiert die "xpc"-Basisklassen.|
+		@en|This name-space defines the "xpc"-base-classes.|
+		+ (): pc.xpc // pc.NS
+		+ This(): pc.xpc.This
+			@de|Diese Klasse definiert die öffentliche Instanz bzw. den öffentlichen Prototyp einer "xpc"-Klasse.|
+			@en|This class defines the public instance or the public prototype of a "xpc"-class.|
+		+ Type<GThis: pc.xpc.This>(): pc.xpc.Type<GThis>
+			@de|Diese Klasse definiert die Klassenfunktion einer "xpc"-Klasse.|
+			@en|This class defines the class-function of a "xpc"-class.|
+		+ Spec<GThis: pc.spc.This>(): pc.xpc.Spec<GThis>
+			@de|Diese Klasse definiert die Spezifikationsfunktion einer "xpc"-Klasse.|
+			@en|This class defines the specification-function of a "xpc"-class.|
+		+ Base(): pc.xpc.Base(): 
+			@de|Diese Klasse definiert die Sammlung der Basistypspezifikationsfunktionen einer "xpc"-Klasse.|
+			@en|This class defines the collection of the base-type-specification-functions of a "xpc"-class.|
+		+ Core<GThis: pc.xpc.This>(): pc.xpc.Core<GThis>
+			@de|Diese Klasse definiert die Instanzkonstrukteurs einer "xpc"-Klasse.|
+			@en|This class defines the instance-constructor  of a "xpc"-class.|
+		+ Cons(): pc.xpc.Cons
+			@de|Diese Klasse definiert die geschützte Instanz bzw. den geschützten Prototyp einer "xpc"-Klasse.|
+			@en|This class defines the protected instance or the protected prototype of a "xpc"-class.|
+	}
+	
+	pc.xpc.This(): pc.This<pc.xpc.Type<pc.xpc.This>> {
+		@de|Diese Klasse definiert die öffentliche Instanz bzw. den öffentlichen Prototyp einer "xpc"-Klasse.|
+		@en|This class defines the public instance or the public prototype of a "xpc"-class.|
+		+ constructor: pc.xpc.Type<pc.xpc.This> // pc.This
+		- This: pc.xpc.This
+			@de|Dieses Feld speichert die öffentliche Instanz.|
+			@en|This field stores the public instance.|
+		- Type: pc.xpc.Type<pc.xpc.This>
+			@de|Dieses Feld speichert die öffentliche Klasse.|
+			@en|This field stores the public class.|
+		- Super(...: Object): pc.xpc.Core<pc.xpc.This>
+			@de|In einem Spezifikationsfunktion verarbeitet diese Methode das Erben der Klassen "..." in der Angegebenen Reigenfologe und gibt "this" zurück. In einem Instanzkonstrukteur ruft sie den Instanzkonstrukteur einer Vorfahrenklasse mit den Argumenten "..." auf und gibt "this" zurück. Sie muss für jede Vorfahrenklasse in der Reigenfolge der Vererbung aufgerufen werden! In einer via "Override()" überschriebenen Methode entspricht diese Methode der überschriebenen Implementierung.|
+			@en|Inside a specification-function this method processes the inheritance of the classes "..." in the given order and returns "this". Inside an instance-constructor it calls the instance-constructor of an ancestor-class with the arguments "..." and returns "this". It has to be called for every ancestor-class in the order of inheritance! Inside a method that was overridden via "Override()" this method corresponds to the overridden implementation.|
+		- Publish(Key: String; Method: Function): pc.xpc.Core<pc.xpc.This>
+			@de|Diese Methode veröffentlicht die Methode "Method" unter dem Schlüssel "Key" ("this.This[Key]()") und gibt "this" zurück. Sollte "Method" "null" sein, wird die geschützte Methode unter dem Schlüssel "Key" ("this[Key]()") stattdessen verwendet.|
+			@en|This method publishes the method "Method" under the key "Key" ("this.This[Key]()") and retruns "this". If "Method" is "null", the protected method under the key "Key" ("this[Key]()") is used instead.|
+		- Override(...: String; Method: Function): pc.xpc.Core<pc.xpc.This>
+			@de|Diese Methode überschreibt die Methode "this[...]()" mit der Methode "Method" und gibt "this" zurück. In "Method" kann über "this.Super()" die überschriebene Implementierung aufgerufen werden. Die Argumente "..." definieren einen nicht leeren Pfad mit der Wurzel "this". Beispielsweise überschreiben die Befehle "this.Override('DoSomething',function(){...})" und "this.Override('This','OnChange',function(){...})" die Methoden "this.DoSomething()" und "this.This.OnChange()".|
+			@en|This method overrides the method "this[...]()" with the method "Method" and retruns "this". In "Method" the overridden implementation can be called via "this.Super()". The arguments "..." define a not empty path with the root "this". For example, the commands "this.Override('DoSomething',function(){...})" and "this.Override('This','OnChange',function(){...})" override the methods "this.DoSomething()" and "this.This.OnChange()".|
+		+ Invoke(Key: String; Args: Object[]): Object
+			@de|Diese Methode ruft die unter dem Schlüssel "Key" veröffentlichte Methode mit den Argumenten "Args" auf und gibt deren Rückgabewert zurück.|
+			@en|This method calls the method published under the key "Key" with the arguments "Args" and returns its result.|
+	}
+
+	pc.xpc.Type<GThis: pc.xpc.This>(): pc.Type<GThis; pc.xpc.Spec<GThis>> {
+		@de|Diese Klasse definiert die Klassenfunktion einer "xpc"-Klasse.|
+		@en|This class defines the class-function of a "xpc"-class.|
+		@de|Der Aufrufoperator initialisiert die Instanz und gibt sie zurück. Die Initialisierung erfolgt durch den Aufruf des Instanzkonstrukteurs dieser Klasse mit der geschützten Instanz als Kontext und den Argumenten "...".|
+		@en|The call-operator initiates the instance and returns it. The initialization is done by calling the instance-constructor of this class with the protected instance as context and the arguments "...".|
+		+ (...: Object): GThis // pc.Type
+		+ constructor: pc.xpc.Spec<GThis> // pc.Type
+	}
+
+	pc.xpc.Spec<GThis: pc.spc.This>(): pc.Spec<GThis; pc.xpc.Type<GThis>; pc.xpc.Cons; pc.xpc.Base> {
+		@de|Diese Klasse definiert die Spezifikationsfunktion einer "xpc"-Klasse.|
+		@en|This class defines the specification-function of a "xpc"-class.|
+		@de|Der Aufrufoperator definiert die Felder und Methode der "xpc"-Klasse und ihrer Prototypen und gibt den Instanzkonstrukteur zurück. Der Kontext "this" ist dabei der geschützte Prototyp vom Typ "pc.xpc.Core&lt;GThis&gt;". Die Argumente "This" und "Type" referenzieren hingegen den öffentlichen Prototypen und die öffentlichen Klassenfunktion.|
+		@en|The call-operator defines the field and methods of the new "xpc"-classes and its prototypes and returns the instance-constructor. The context "this" is the protected prototype of type "pc.xpc.Core&lt;GThis&gt;". The arguments "This" and "Type" represent the public prototype and the öffentlichen class-function.|
+		+ (This: GThis; Type: pc.xpc.Type<GThis>): pc.xpc.Cons // pc.Spec
+		+ constructor: pc.xpc.Base // pc.Spec
+	}
+
+	pc.xpc.Base(): pc.Base<pc.xpc.Spec<?>> {
+		@de|Diese Klasse definiert die Sammlung der Basistypspezifikationsfunktionen einer "xpc"-Klasse.|
+		@en|This class defines the collection of the base-type-specification-functions of a "xpc"-class.|
+		+ {}: pc.xpc.Spec<?> // pc.Base
+		+ constructor: String // pc.Base
+	}
+	
+	pc.xpc.Cons(): Function {
+		@de|Diese Klasse definiert die Instanzkonstrukteurs einer "xpc"-Klasse.|
+		@en|This class defines the instance-constructor  of a "xpc"-class.|
+		+ (...: Object): Void
+			@de|Der Aufrufoperator initialisiert die geschützten Instanz "this" mit den Argumenten "...".|
+			@en|The call-operator initiates the protected instance "this" with the arguments "...".|
+	}
+	
+	pc.xpc.Core<GThis: pc.xpc.This>(): Object {
+		@de|Diese Klasse definiert die geschützte Instanz bzw. den geschützten Prototyp einer "xpc"-Klasse.|
+		@en|This class defines the protected instance or the protected prototype of a "xpc"-class.|
+		+ This: GThis
+			@de|In einem Spezifikationsfunktion speichert dieses Feld den öffentlichen Prototyp und in einem Instanzkonstrukteur speichert es die öffentliche Instanz.|
+			@en|Inside a specification-function this field stores the public prototype an inside an instance-constructor it stores the public instance.|
+		+ Type: pc.xpc.Type<GThis>
+			@de|Dieses Feld speichert die öffentliche Klasse.|
+			@en|This field stores the public class.|
+		+ Super(...: pc.xpc.Type<?>): pc.xpc.Core<GThis>
+			@de|In einem Spezifikationsfunktion verarbeitet diese Methode das Erben der Klassen "..." in der Angegebenen Reigenfologe und gibt "this" zurück. In einem Instanzkonstrukteur ruft sie den Instanzkonstrukteur einer Vorfahrenklasse mit den Argumenten "..." auf und gibt "this" zurück. Sie muss für jede Vorfahrenklasse in der Reigenfolge der Vererbung aufgerufen werden! In einer via "Override()" überschriebenen Methode entspricht diese Methode der überschriebenen Implementierung.|
+			@en|Inside a specification-function this method processes the inheritance of the classes "..." in the given order and retruns "this". Inside an instance-constructor it calls the instance-constructor of an ancestor-class with the arguments "..." and returns "this". It has to be called for every ancestor-class in the order of inheritance! Inside a method that was overridden via "Override()" this method corresponds to the overridden implementation.|
+		+ Publish(Key: String; Method: Function): pc.xpc.Core<GThis>
+			@de|Diese Methode veröffentlicht die Methode "Method" unter dem Schlüssel "Key" ("this.This[Key]()") und gibt "this" zurück. Sollte "Method" "null" sein, wird die geschützte Methode unter dem Schlüssel "Key" ("this[Key]()") stattdessen veröffentlicht.|
+			@en|This method publishes the method "Method" under the key "Key" ("this.This[Key]()") and retruns "this". If "Method" is "null", the protected method under the key "Key" ("this[Key]()") is publishd instead.|
+		+ Override(...: String; Method: Function): pc.xpc.Core<GThis>
+			@de|Diese Methode überschreibt die Methode "this[...]()" mit der Methode "Method" und gibt "this" zurück. In "Method" kann über "this.Super()" die überschriebene Implementierung aufgerufen werden. Die Argumente "..." definieren einen nicht leeren Pfad mit der Wurzel "this". Beispielsweise überschreiben die Befehle "this.Override('DoSomething',function(){...})" und "this.Override('This','OnChange',function(){...})" die Methoden "this.DoSomething()" und "this.This.OnChange()".|
+			@en|This method overrides the method "this[...]()" with the method "Method" and retruns "this". In "Method" the overridden implementation can be called via "this.Super()". The arguments "..." define a not empty path with the root "this". For example, the commands "this.Override('DoSomething',function(){...})" and "this.Override('This','OnChange',function(){...})" override the methods "this.DoSomething()" and "this.This.OnChange()".|
+	}
+
+--}
