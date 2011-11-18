@@ -35,11 +35,11 @@ pc(): pc.NS<pc> {
 	@|</u><br>|
 	@de|Hier wird die Funktion "myNameSpace()" definiert, die sich selbst durch einen neuen Namensraum ersetzt und diesen zurückgibt. Nachdem die Funktion "myNameSpace()" mit dem Namensraum ersetzt worden ist, kann dieser um beliebige Felder und Methoden erweitert werden.|
 	@en|Here the function "myNameSpace()" is defined, that replaces itself with a new name-space and returns it. After the function "myNameSpace()" has been replaced with the name-space, it can arbitrarily be extended by fields and methods.|
-	@|<div class=""pre code"">function myNameSpace(){
+	@|<pre>function myNameSpace(){
   myNameSpace = pc.Ns();
   ...
   return myNameSpace;
-}</div><br><u>|
+}</pre><u>|
 	--}
 	--{ NAME-SPACE FIELD
 	@de|Definition eines Namensraums mit Feldern:|
@@ -47,9 +47,9 @@ pc(): pc.NS<pc> {
 	@|</u><br>|
 	@de|Hier wird der Namensraum "CONST()" mit seinen Feldern "PI" und "E" definiert.|
 	@en|Here the name-space "CONST()" with its fields "PI" and "E" is defined.|
-	@|<div class=""pre code"">function CONST(){
+	@|<pre>function CONST(){
   return CONST = pc.Ns({ PI: 3.141592654, E: 2.718281828 });
-}</div><br><u>|
+}</pre><u>|
 	--}
 	--{ NAME-SPACE MEMBER 
 	@de|Definition eines Namensraums mit Feldern und Methoden:|
@@ -57,7 +57,7 @@ pc(): pc.NS<pc> {
 	@|</u><br>|
 	@de|Hier wird der Namensraum "node()" zur "HTML"-Knotenerzeugung definiert. Er enthält das private Feld "functionNames", die öffentlichen Felder "ID", "TAG" und "TEXT" sowie die öffentliche Methode "create()".|
 	@en|Here the name-space "node()" for "HTML"-node-creation is defined. It contains the private field "functionNames", the public fields "ID", "TAG" and "TEXT" as well as the public method "create()".|
-	@|<div class=""pre code"">function node(){
+	@|<pre>function node(){
   var functionNames = [ 'getElementById', 'createElement', 'createTextNode' ];
   return node = pc.Ns({
     ID: 0, TAG: 1, TEXT: 2
@@ -65,7 +65,7 @@ pc(): pc.NS<pc> {
       return ((Mode = functionNames[Mode]) ? document[Mode](Value) : null);
     }
    });
-}</div><br><u>|
+}</pre><u>|
 	--}
 	--{ CLASS VOID
 	@de|Definition einer leeren Klasse:|
@@ -73,14 +73,14 @@ pc(): pc.NS<pc> {
 	@|</u><br>|
 	@de|Hier werden die leeren Klassen "voidXpcClass" und "voidSpcClass" ohne Mitglieder definiert.|
 	@en|Here the empty classes "voidXpcClass" and "voidSpcClass" without members are defined.|
-	@|<div class=""pre code"">var voidXpcClass = pc.Of(function(This, Type){
+	@|<pre>var voidXpcClass = pc.Of(function(This, Type){
   return function(){
   };
 },false);
 var voidSpcClass = pc.Of(function(This, Type){
   return function(){
   };
-},true);</div><u>|
+},true);</pre><u>|
 	--}
 	--{ CLASS MEMBER
 	@de|Definition einer Klasse mit Feldern und Methoden verschiedener Sichtbarkeit:|
@@ -89,7 +89,7 @@ var voidSpcClass = pc.Of(function(This, Type){
 	@de|Hier definiert die "xpc"-Klasse "nameXpcClass" das private statische Feld "instanceCount", das geschützte Feld "name", die geschützten Methoden "getName()" und "setName()", die öffentliche statische Methode "getInstanceCount()", sowie die öffentlichen Methoden "getId()", "getName()", "setName()" und "toString()". Das Konstrukteurargument "Id" wird als privates Feld von der Methode "getId()" genutzt und das Konstrukteurargument "Name" initialisiert das geschützte Feld "name".|
 	@en|Here the "xpc"-class "nameXpcClass" defines the private static field "instanceCount", the protected field "name", the protected methods "getName()" and "setName()", the public static method "getInstanceCount()", as well as the public methods "getId()", "getName()", "setName()" and "toString()". The constructor-argument "Id" is used as a private field by the method "getId()" and the constructor-argument "Name" initiates the protected field "name".|
 		--{ XPC
-	@|<div class=""pre code"">var nameXpcClass = pc.Of(function(This, Type){
+	@|<pre>var nameXpcClass = pc.Of(function(This, Type){
   var instanceCount = 0;
   this.name = null
   this.getName = function(){
@@ -113,12 +113,12 @@ var voidSpcClass = pc.Of(function(This, Type){
     };
     this.name = Name;
   };
-},false);</div><br>|
+},false);</pre>|
 		--}
 	@de|In der "spc"-Klasse "nameSpcClass" werden die gleichen öffentlichen und statischen Mitglieder definiert. Das Feld "name" ist nun aber auch öffentlich.|
 	@en|In the "spc"-class "nameSpcClass" the same public and static members are fedined. The field "name" now also is public.|
 		--{ SPC
-	@|<div class=""pre code"">var nameSpcClass = pc.Of(function(This, Type){
+	@|<pre>var nameSpcClass = pc.Of(function(This, Type){
   var instanceCount = 0;
   This.getName = function(){
     return this.name;
@@ -140,7 +140,7 @@ var voidSpcClass = pc.Of(function(This, Type){
     };
     this.name = Name;
   };
-},true);</div><br><u>|
+},true);</pre><u>|
 		--}
 	--}
 	--{ CLASS INHERIT
@@ -150,7 +150,7 @@ var voidSpcClass = pc.Of(function(This, Type){
 	@de|Hier erbt die "xpc"-Klasse "personXpcClass" von der "xpc"-Klasse "nameXpcClass" und ruft in ihrer Konstrukteurfunktion die Konstrukteurfunktion der Vorfahrenklasse auf. Des Weiteren definiert sie das geschützte Feld "age", sowie die öffentlichen Methoden "getAge()", "setAge()" und "toString()".|
 	@en|Here the "xpc"-class "personXpcClass" inherits from the "xpc"-class "nameXpcClass" and calls the ancestor-class's constructor-function in its own constructor-function. Besides this, it defines the protected field "age", as well as the public methods "getAge()", "setAge()" and "toString()".|
 		--{ XPC
-	@|<div class=""pre code"">var personXpcClass = pc.Of(function(This, Type){
+	@|<pre>var personXpcClass = pc.Of(function(This, Type){
   this.Super(nameXpcClass);
   this.Publish('getAge', function(){
     return this.age;
@@ -165,12 +165,12 @@ var voidSpcClass = pc.Of(function(This, Type){
   return function(Id, Age, Name){
     this.Super(Id, Name).age = Age;
   };
-},false);</div><br>|
+},false);</pre>|
 		--}
 	@de|Die "spc"-Klasse "personSpcClass" definiert die gleichen Mitglieder und erbt von der "spc"-Klasse "nameSpcClass".|
 	@en|The "spc"-class "personSpcClass" defines the same members and inherits from the "spc"-class "nameSpcClass".|
 		--{ SPC
-	@|<div class=""pre code"">var personSpcClass = pc.Of(function(This, Type){
+	@|<pre>var personSpcClass = pc.Of(function(This, Type){
   this.Super(nameSpcClass);
   This.getAge = function(){
     return this.age;
@@ -186,7 +186,7 @@ var voidSpcClass = pc.Of(function(This, Type){
     nameSpcClass.call(this, Id, Name);
     this.age = Age;
   };
-},true);</div><br><u>|
+},true);</pre><u>|
 		--}
 	--}
 	--{ CLASS OVERRIDE
@@ -196,7 +196,7 @@ var voidSpcClass = pc.Of(function(This, Type){
 	@de|Hier überschreibt die "xpc"-Klasse "nameModifyXpcClass" die geerbte Methode "setName()" mit einer Funktion, die bei bevor stehender Veränderung des geschützten Feldes "name" ein "alert" Fenster anzeigt und anschließend die vorherige Implementierung dieser Methode aufruft, wodurch der Wert des Feldes schließlich geändert wird.|
 	@en|Here the "xpc"-class "nameModifyXpcClass" overrides the inherited method "setName()" with a function, that indicates the imminent modification of the protected field "name" with an "alert"-window and afterwards calls the previous implementing of this method by which the value of the field is finally modified.|
 		--{ XPC
-	@|<div class=""pre code"">var nameModifyXpcClass = pc.Of(function(This, Type){
+	@|<pre>var nameModifyXpcClass = pc.Of(function(This, Type){
   this.Super(nameXpcClass).Override('setName', function(Name){
     if(Name != this.name)alert(this.This + '.name has been modified!');
     return this.Super(Name);
@@ -204,12 +204,12 @@ var voidSpcClass = pc.Of(function(This, Type){
   return function(Id, Name){
     this.Super(Id, Name);
   };
-},false);</div><br>|
+},false);</pre>|
 		--}
 	@de|Die "spc"-Klasse "nameModifySpcClass" überschreibt die gleiche Methode und erbt von der "spc"-Klasse "nameSpcClass".|
 	@en|The "spc"-class "nameModifySpcClass" overrides the same method and inherits from the "spc"-class "nameSpcClass".|
 		--{ SPC
-	@|<div class=""pre code"">var nameModifySpcClass = pc.Of(function(This, Type){
+	@|<pre>var nameModifySpcClass = pc.Of(function(This, Type){
   this.Super(nameSpcClass).Override('This','setName', function(Name){
     if(Name != this.name)alert(this + '.name has been modified!');
     return this.Super(Name);
@@ -217,7 +217,7 @@ var voidSpcClass = pc.Of(function(This, Type){
   return function(Id, Name){
     nameSpcClass.call(this, Id, Name);
   };
-},true);</div>|
+},true);</pre>|
 		--}
 	--}
 	+ (): pc // pc.NS
@@ -239,6 +239,18 @@ var voidSpcClass = pc.Of(function(This, Type){
 	- Base<GSpec: pc.Spec<?; ?; ?; ?>>(): pc.Base<GSpec>
 		@de|Diese Klasse definiert die Sammlung der Basistypspezifikationsfunktionen einer "pc"-Klasse.|
 		@en|This class defines the collection of the base-type-specification-functions of a "pc"-class.|
+	- copy<GNs>(Ns: GNs; Map: Object{}): GNs
+		@de|Diese Methode implementiert "pc.Ns()".|
+		@en|This method implements "pc.Ns()".|
+	- error(): Void
+		@de|Diese Methode wirft einen Ausnahmefehler.|
+		@en|This method throws an exception.|
+	- superNodeOf(Super: pc.xpc.Cons; Supers: Object[]): pc.xpc.Cons
+		@de|Diese Methode berechnet die verkette Liste der Instanzkonstruktoren einer "xpc"-Klasse.|
+		@en|This method calculates the linked list of the instance-constructors of a "xpc"-class.|
+	- override(...: String; Method: Function): pc.xpc.Core<pc.xpc.This>
+		@de|Diese Methode implementiert "pc.spc.Core.Override()", "pc.xpc.Core.Override()" und "pc.xpc.This.Override()".|
+		@en|This method implements "pc.spc.Core.Override()", "pc.xpc.Core.Override()" and "pc.xpc.This.Override()".|
 	+ Ns<GNs: pc.NS>(Map: Object{}): pc.NS<GNs>
 		@de|Diese Methode erstellt einen neuen Namensraum, erweitert ihn um die Mitglieder in "Map" und gibt ihn zurück. Ein Namensraum ist eine Funktion die sich selbst zurückgibt.|
 		@en|This method creates a new name-space, extends it by the members in "Map" and returns it. A name-space is a function that returns itself.|
@@ -471,7 +483,7 @@ var voidSpcClass = pc.Of(function(This, Type){
 	
 	pc.xpc.Cons(): Function {
 		@de|Diese Klasse definiert die Instanzkonstrukteurs einer "xpc"-Klasse.|
-		@en|This class defines the instance-constructor  of a "xpc"-class.|
+		@en|This class defines the instance-constructor of a "xpc"-class.|
 		+ (...: Object): Void
 			@de|Der Aufrufoperator initialisiert die geschützten Instanz "this" mit den Argumenten "...".|
 			@en|The call-operator initiates the protected instance "this" with the arguments "...".|

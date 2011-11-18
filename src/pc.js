@@ -72,7 +72,7 @@ function pc(){ // (): pc.NS<pc>
 				return coreTemp[Key].apply(coreThis,Args);
 			};
 			(((coreThis.Type=typeType).constructor=typeSpec).constructor=base).constructor=String(++id);
-			coreThis.Super=function(){ // (...: pcTypeX<?>): pc.xpc.Core<pc.xpc.This>
+			coreThis.Super=function(){ // (...: pc.xpc.Type<?>): pc.xpc.Core<pc.xpc.This>
 				for(var i=0,key,item,list=arguments,node;i<list.length;i++){
 					(node=superNode).push(superNode=[null]);
 					if(!base[key=(item=list[i]).constructor.constructor.constructor]){
