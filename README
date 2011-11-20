@@ -1,4 +1,4 @@
-pc - prototype class - [cc-by] Sebastian Rostock
+pc - prototype class - [cc-by] Sebastian Rostock (bee-creative@gmx.de)
 Dieses Werk ist unter einem Creative Commons Namensnennung 3.0 Deutschland Lizenzvertrag lizenziert. Um die Lizenz anzusehen, gehen Sie bitte zu:  [ http://creativecommons.org/licenses/by/3.0/de/ ] oder schicken Sie einen Brief an:  [ Creative Commons, 171 Second Street, Suite 300, San Francisco, California 94105, USA. ]
 
 Der Name "pc" steht für "Prototype-Class" (Prototypenklasse) und bezeichnet den Kern einer objektorientierten Mehrfachvererbungsbibliothek für "JavaScript". Diese Bibliothek bietet eine bequeme Schnittstelle zur Definition neuer Klassen. Bemerkenswert sind die Fähigkeiten, Klassen und Objekte mit privaten, geschützten und öffentlichen Feldern und Methoden zu definieren.
