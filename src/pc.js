@@ -1,7 +1,7 @@
 ﻿/** pc - prototype class - [cc-by] 2010 Sebastian Rostock **/
 /** Dieses Werk ist unter einem Creative Commons Namensnennung 3.0 Deutschland Lizenzvertrag lizenziert. Um die Lizenz anzusehen, gehen Sie bitte zu:  [ http://creativecommons.org/licenses/by/3.0/de/ ] oder schicken Sie einen Brief an:  [ Creative Commons, 171 Second Street, Suite 300, San Francisco, California 94105, USA. ] **/
 
-function pc(){ // (): pc.NS<pc>
+function pc(){ // (): pcNS<pc>
 	var id=0;
 	var copy=function(Ns,Map){ // <GNs>(Ns: GNs; Map: Object{}): GNs
 		if(Ns&&Map)for(var key in Map)Ns[key]=Map[key];
@@ -10,18 +10,18 @@ function pc(){ // (): pc.NS<pc>
 	var error=function(){ // (): Void
 		throw new Error('UnsupportedMethodException');
 	};
-	var superNodeOf=function(Super,Supers){ // (Super: pc.xpc.Cons; Supers: Object[]): pc.xpc.Cons
+	var superNodeOf=function(Super,Supers){ // (Super: xpcCons; Supers: Object[]): xpcCons
 		for(var i=Supers.length;--i;Super=superNodeOf(Super,Supers[i]));
-		return ((Supers=Supers[0])?function(){ // (...: Object): pc.xpc.Core<?>
+		return ((Supers=Supers[0])?function(){ // (...: Object): xpcCore<?>
 			this.Super=Super;
 			Supers.apply(this,arguments);
 			return this;
-		}:function(){ // (...: Object): pc.xpc.Core<?>
+		}:function(){ // (...: Object): xpcCore<?>
 			this.Super=Super;
 			return this;
 		});
 	};
-	var override=function(){// (...: String; Method: Function): pc.xpc.Core<pc.xpc.This>
+	var override=function(){// (...: String; Method: Function): xpcCore<xpcThis>
 		var i=0,key,list=arguments,size=list.length,_this,superNode=this,method=list[--size];
 		if(method)while((i<size)&&superNode)superNode=(_this=superNode)[key=list[i++]];
 		if(!_this||(i!=size))return this;
@@ -44,14 +44,14 @@ function pc(){ // (): pc.NS<pc>
 		var ns=function(){return ns;};
 		return copy(ns,Map);
 	};
-	pc.Is=function(Type){ // (Type: pc.Type<?>; ...: pc.Type<?>): Boolean
+	pc.Is=function(Type){ // (Type: pcType<?>; ...: pcType<?>): Boolean
 		for(var i=1,map=Type.constructor.constructor;i<arguments.length;i++)if(!map[arguments[i].constructor.constructor.constructor])return false;
 		return true;
 	};
-	pc.Of=function(Spec,Simple){// <GThis: pc.This<GType>; GType: pc.Type<GThis; GSpec>; GSpec: pc.Spec<GThis; GType; ?; ?>>(Spec: GSpec; Simple: Boolean): GType
+	pc.Of=function(Spec,Simple){// <GThis: pcThis<GType>; GType: pcType<GThis; GSpec>; GSpec: pcSpec<GThis; GType; ?; ?>>(Spec: GSpec; Simple: Boolean): GType
 		if(Simple){
 			var baseS={},thisS={},typeT=function(){ // (): Void
-			},coreS={This:thisS,Type:typeT,Super:function(){ // (...: pc.spc.Type<?>): pc.spc.Core<pc.spc.This>
+			},coreS={This:thisS,Type:typeT,Super:function(){ // (...: spcType<?>): spcCore<spcThis>
 				for(var i=0,key,item,list=arguments;i<list.length;i++)
 					if(!baseS[key=(item=list[i].constructor).constructor.constructor])
 						(baseS[key]=item).call(coreS,thisS,typeT);
@@ -60,19 +60,19 @@ function pc(){ // (): pc.NS<pc>
 			((copy(typeS,typeT).prototype=thisS).constructor=typeS).constructor=Spec;
 			return typeS;
 		}else{
-			var superNode=[],coreTemp={},coreThis,typeSpec=Spec,base={},coreType=function(This,Args){ // (This: pc.xpc.Core<pc.xpc.This>; Args: Object[]): pc.xpc.This
+			var superNode=[],coreTemp={},coreThis,typeSpec=Spec,base={},coreType=function(This,Args){ // (This: xpcCore<xpcThis>; Args: Object[]): xpcThis
 				(this.This=This).Invoke=function(Key,Args){ // (Key: String; Args: Object[]): Object
 					return coreTemp[Key].apply(This,Args);
 				};
 				superNode.apply(This=this,Args);
-			},typeType=function(){ // (...: Object): pc.xpc.This
+			},typeType=function(){ // (...: Object): xpcThis
 				return new coreType(this,arguments).This;
 			};
 			((coreThis=coreType.prototype).This=typeType.prototype).Invoke=function(Key,Args){ // (Key: String; Args: Object[]): Object
 				return coreTemp[Key].apply(coreThis,Args);
 			};
 			(((coreThis.Type=typeType).constructor=typeSpec).constructor=base).constructor=String(++id);
-			coreThis.Super=function(){ // (...: pc.xpc.Type<?>): pc.xpc.Core<pc.xpc.This>
+			coreThis.Super=function(){ // (...: xpcType<?>): xpcCore<xpcThis>
 				for(var i=0,key,item,list=arguments,node;i<list.length;i++){
 					(node=superNode).push(superNode=[null]);
 					if(!base[key=(item=list[i]).constructor.constructor.constructor]){
@@ -82,7 +82,7 @@ function pc(){ // (): pc.NS<pc>
 				}
 				return this;
 			};
-			coreThis.Publish=function(Key,Method){ // (Key: String; Method: Function): pc.xpc.Core<?>
+			coreThis.Publish=function(Key,Method){ // (Key: String; Method: Function): xpcCore<?>
 				coreTemp[Key]=Method||function(){ // (...: Object): Object
 					return this[Key].apply(this,arguments);
 				};
