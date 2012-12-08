@@ -75,9 +75,8 @@ function pc(){ // (): pcNS<pc>
 			coreThis.Super=function(){ // (...: xpcType<?>): xpcCore<xpcThis>
 				for(var i=0,key,item,list=arguments,node;i<list.length;i++){
 					(node=superNode).push(superNode=[null]);
-					if(!base[key=(item=list[i]).constructor.constructor.constructor]){
+					if(!base[key=(item=list[i]).constructor.constructor.constructor])
 						superNode[0]=(base[key]=item).constructor.call(this,this.This,this.Type);
-					}
 					superNode=node;
 				}
 				return this;
