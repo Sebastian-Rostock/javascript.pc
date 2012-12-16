@@ -104,14 +104,14 @@ function pc(){ // (): pcNS<pc>
 	pc.MapToString=function(Map){ // (Map: Object{}): String
 		if(!Map)return 'null';
 		var list=[];
-		for(var key in Map)list.push(pc.spcTextToString(key)+':'+pc.spcTextToString(String(Map[key])));
+		for(var key in Map)list.push(pc.TextToString(key)+':'+pc.TextToString(String(Map[key])));
 		return (list.length?'{\n  '+list.join(',\n  ')+'\n}':'{}');
 	};
 	pc.ListToString=function(List){ // (List: Object[]): String
 		return (List?(List.length?'[\n  '+List.join(',\n').replace(/\n/g,'\n  ')+'\n]':'[]'):'null');
 	};
 	pc.TextToString=function(Text){ // (String: String): String
-		return (Text?'\''+Text.replace(/(['"\\])/g,'\\$1').replace(/\t/g,'\\t').replace(/\n/g,'\\n')+'\'':((Text=='')?'\'\'':'null'));
+		return (Text?'\''+Text.replace(/(['"\\])/g,'\\$1').replace(/\t/g,'\\t').replace(/\r/g,'\\r').replace(/\n/g,'\\n')+'\'':((Text=='')?'\'\'':'null'));
 	};
 	return pc;
 }
