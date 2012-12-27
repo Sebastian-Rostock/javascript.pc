@@ -1,6 +1,6 @@
 # pc - prototype class
 
-	[cc-by] Sebastian Rostock (bee-creative@gmx.de)
+	[cc-by] 2007 Sebastian Rostock (bee-creative@gmx.de)
 
 ---
 
@@ -401,6 +401,6 @@ The `spc`-class `nameModifySpcClass` overrides the same method and inherits from
 
 ---
 
-##### [cc-by] Sebastian Rostock ( bee-creative@gmx.de )
+##### [cc-by] 2007 Sebastian Rostock ( bee-creative@gmx.de )
 
-Dieses Werk ist unter einem Creative Commons Namensnennung 3.0 Deutschland Lizenzvertrag lizenziert. Um die Lizenz anzusehen, gehen Sie bitte zu: [ http://creativecommons.org/licenses/by/3.0/de/ ] oder schicken Sie einen Brief an: [ Creative Commons, 171 Second Street, Suite 300, San Francisco, California 94105, USA. ]
+Dieses Werk ist unter einem Creative Commons Namensnennung 3.0 Deutschland Lizenzvertrag lizenziert.
